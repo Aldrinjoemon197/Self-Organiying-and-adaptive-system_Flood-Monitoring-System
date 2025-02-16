@@ -1,0 +1,46 @@
+import random
+import time
+import numpy as np
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+
+# Simulated sensor data collection
+class SensorSimulator:
+    def __init__(self):
+        pass
+
+    def collect_data(self):
+        water_level = random.uniform(0, 10)  # in meters
+        rainfall = random.uniform(0, 100)  # in mm
+        soil_moisture = random.uniform(0, 100)  # in percentage
+        return [water_level, rainfall, soil_moisture]
+
+# Generating sample data for model training
+np.random.seed(42)
+data = np.random.rand(500, 3) * [10, 100, 100]
+labels = [1 if d[0] > 7 and d[1] > 60 and d[2] > 70 else 0 for d in data]
+
+# Train a simple AI model
+X_train, X_test, y_train, y_test = train_test_split(data, labels, test_size=0.2, random_state=42)
+model = RandomForestClassifier(n_estimators=10, random_state=42)
+model.fit(X_train, y_train)
+y_pred = model.predict(X_test)
+accuracy = accuracy_score(y_test, y_pred)
+print(f"Model Training Accuracy: {accuracy:.2f}")
+
+# Real-time Monitoring and Prediction
+sensor = SensorSimulator()
+
+while True:
+    current_data = sensor.collect_data()
+    prediction = model.predict([current_data])[0]
+
+    print(f"Sensor Data: Water Level={current_data[0]:.2f}m, Rainfall={current_data[1]:.2f}mm, Soil Moisture={current_data[2]:.2f}%")
+
+    if prediction == 1:
+        print("Flood Risk Detected! Alerting Authorities...")
+    else:
+        print("No Flood Risk.")
+
+    time.sleep(5)  # simulate data collection every 5 seconds
