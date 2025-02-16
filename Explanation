@@ -1,0 +1,60 @@
+1. Importing Libraries
+
+random: Used to simulate random sensor data.
+time: Used to pause the code (simulate real-time sensor reading every few seconds).
+numpy (np): Used for creating arrays and performing numerical operations.
+sklearn.ensemble.RandomForestClassifier: A machine learning model that uses multiple decision trees for classification.
+sklearn.model_selection.train_test_split: Splits data into training and testing sets.
+sklearn.metrics.accuracy_score: Evaluates the accuracy of the model.
+
+2. Sensor Simulator Class
+
+class SensorSimulator: Defines a class to simulate sensor readings.
+init(): The constructor (empty in this case).
+collect_data(): Simulates collecting sensor readings:
+water_level: Random value between 0 and 10 meters.
+rainfall: Random value between 0 and 100 mm.
+soil_moisture: Random value between 0 and 100 percent.
+Returns sensor readings as a list [water_level, rainfall, soil_moisture].
+
+3. Generating Sample Data for Training the AI Model
+
+np.random.seed(42): Sets a seed for reproducibility (same random values every time).
+data: Creates an array of 500 samples, each containing 3 random values:
+data[:, 0]: Water level (0 to 10 meters).
+data[:, 1]: Rainfall (0 to 100 mm).
+data[:, 2]: Soil moisture (0 to 100%).
+labels: Generates flood risk labels (1 = Flood Risk, 0 = No Risk) based on conditions:
+Flood risk (1) if:
+Water level > 7 meters
+Rainfall > 60 mm
+Soil moisture > 70%
+Otherwise, no risk (0).
+
+4. Training the Machine Learning Model
+
+train_test_split(): Splits data into training (80%) and testing (20%) sets.
+RandomForestClassifier(): Creates a random forest classifier with 10 decision trees.
+model.fit(): Trains the model using the training data.
+model.predict(): Predicts flood risk on the test data.
+accuracy_score(): Calculates model accuracy (percentage of correct predictions).
+print(): Prints the accuracy as a percentage (e.g., 0.92 = 92%).
+
+5. Real-Time Monitoring and Prediction
+
+sensor = SensorSimulator(): Creates an instance of SensorSimulator.
+while True: Infinite loop to simulate real-time monitoring.
+sensor.collect_data(): Collects random sensor readings.
+model.predict(): Predicts flood risk based on collected data.
+print(): Displays sensor readings and prediction result:
+If prediction is 1: Displays flood risk alert.
+If prediction is 0: Displays “No Flood Risk”.
+time.sleep(5): Pauses for 5 seconds before the next sensor reading (simulating real-time data collection).
+
+Final Output Example
+
+Model Training Accuracy: 0.92
+Sensor Data: Water Level=8.45m, Rainfall=85.23mm, Soil Moisture=78.45%
+Flood Risk Detected! Alerting Authorities...
+Sensor Data: Water Level=3.12m, Rainfall=45.67mm, Soil Moisture=50.32%
+No Flood Risk.
